@@ -23,7 +23,7 @@ if (!isset($_GET['code'])) {
  curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/token");
  curl_setopt($ch, CURLOPT_POST, 1);
  $client_id = "0db6ad3a-5d4a-4ae9-b38a-5305e7b1bbd3";
- $client_secret = "kk8Y-YV@2dm1@bzs7k=+Ix=2RrEtR[c2";
+ $client_secret = //notforpubliceyes;
  curl_setopt($ch, CURLOPT_POSTFIELDS,
  "grant_type=authorization_code&client_id=".$client_id."&redirect_uri=https%3a%2f%2fwww.arteveldehogeschool.be%2fazuredirectory%2f1%2fazurelogin.php&resource=https%3A%2F%2Fgraph.microsoft.com%2F&&code=".$accesscode."&client_secret=".urlencode($client_secret));
  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
