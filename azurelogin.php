@@ -2,7 +2,7 @@
 session_start();
 error_reporting(-1);
 ini_set('display_errors', 'On');
-
+//Kijken of login met azure ad al gebeurd is
 if (!isset($_GET['code'])) {
  $authUrl = "https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/authorize?";
  $authUrl .= "client_id=0db6ad3a-5d4a-4ae9-b38a-5305e7b1bbd3";
@@ -12,13 +12,15 @@ if (!isset($_GET['code'])) {
  $authUrl .= "&resource=https%3A%2F%2Fgraph.microsoft.com%2F";
  $authUrl .= "&state=12345";
 
- header('Location: '.$authUrl);
+ header('Location: '.$authUrl); //loginurl
  exit;
 
 } else {
 
+ //code ophalen uit return login-procedure
  $accesscode = $_GET['code'];
 
+ //authenticatietoken voor graph api
  $ch = curl_init();
  curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/token");
  curl_setopt($ch, CURLOPT_POST, 1);
@@ -31,6 +33,7 @@ if (!isset($_GET['code'])) {
  curl_close ($ch);
  $jsonoutput = json_decode($server_output, true);
 
+ //haal json van graph api
  $bearertoken = $jsonoutput['access_token'];
  $url = "https://graph.microsoft.com/v1.0/me";
  $ch = curl_init($url);
