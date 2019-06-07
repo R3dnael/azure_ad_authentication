@@ -30,11 +30,11 @@ if (!isset($_GET['code'])) {
             &redirect_uri=".$configs["redirectUri"]."
             &client_id=".$configs["clientId"]."
             &scope=offline_access%20https://graph.microsoft.com/user.read%20openid
-            &client_secret=".$configs["clientSecret"]."
+            &client_secret=".urlencode($configs["clientSecret"])."
             &&code=" . $_GET['code'];
- $getaccesstoken = new \curllcall();
+ $getaccesstoken = new curllcall();
  $result = $getaccesstoken->POSTcall($configs["urlAccessToken"], $curlopt);
- $apicall = new \curllcall();
+ $apicall = new curllcall();
  $result = $apicall->GETcall($configs["urlResourceOwnerDetails"],  $result["access_token"]);
  $obj = json_decode($result);
  $mail = $obj->mail;
