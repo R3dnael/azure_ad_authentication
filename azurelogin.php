@@ -2,14 +2,19 @@
 session_start();
 error_reporting(-1);
 ini_set('display_errors', 'On');
+//load azureconfig
+$configs = include('azureconfig.php');
+//include curlcall.php
+include_once('curlcall.php');
+
 //Kijken of login met azure ad al gebeurd is
 if (!isset($_GET['code'])) {
- $authUrl = "https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/authorize?";
- $authUrl .= "client_id=0db6ad3a-5d4a-4ae9-b38a-5305e7b1bbd3";
+ $authUrl = $configs["urlAuthorize"]."?";
+ $authUrl .= "client_id=".$configs["clientId"];
  $authUrl .= "&response_type=code";
- $authUrl .= "&redirect_uri=https%3a%2f%2fwww.arteveldehogeschool.be%2fazuredirectory%2f1%2fazurelogin.php";
+ $authUrl .= "&redirect_uri=".$configs["redirectUri"];
  $authUrl .= "&response_mode=query";
- $authUrl .= "&resource=https%3A%2F%2Fgraph.microsoft.com%2F";
+ $authUrl .= "&scope=".$configs["scope"];
  $authUrl .= "&state=12345";
 
  header('Location: '.$authUrl); //loginurl
@@ -19,38 +24,23 @@ if (!isset($_GET['code'])) {
 
  //code ophalen uit return login-procedure
  $accesscode = $_GET['code'];
-
  //authenticatietoken voor graph api
- $ch = curl_init();
- curl_setopt($ch, CURLOPT_URL,"https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/token");
- curl_setopt($ch, CURLOPT_POST, 1);
- $client_id = "0db6ad3a-5d4a-4ae9-b38a-5305e7b1bbd3";
- $client_secret = //notforpubliceyes;
- curl_setopt($ch, CURLOPT_POSTFIELDS,
- "grant_type=authorization_code&client_id=".$client_id."&redirect_uri=https%3a%2f%2fwww.arteveldehogeschool.be%2fazuredirectory%2f1%2fazurelogin.php&resource=https%3A%2F%2Fgraph.microsoft.com%2F&&code=".$accesscode."&client_secret=".urlencode($client_secret));
- curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
- $server_output = curl_exec ($ch);
- curl_close ($ch);
- $jsonoutput = json_decode($server_output, true);
 
- //haal json van graph api
- $bearertoken = $jsonoutput['access_token'];
- $url = "https://graph.microsoft.com/v1.0/me";
- $ch = curl_init($url);
- curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
- $User_Agent = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31';
- $request_headers = array();
- $request_headers[] = 'User-Agent: '. $User_Agent;
- $request_headers[] = 'Accept: application/json';
- $request_headers[] = 'Authorization: Bearer '. $bearertoken;
- curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
- $result = curl_exec($ch);
- curl_close($ch);
- $json = json_decode($result, true);
- $mail = $json['mail'];
+ $curlopt = "grant_type=authorization_code
+            &redirect_uri=".$configs["redirectUri"]."
+            &client_id=".$configs["clientId"]."
+            &scope=offline_access%20https://graph.microsoft.com/user.read%20openid
+            &client_secret=".$configs["clientSecret"]."
+            &&code=" . $_GET['code'];
+ $getaccesstoken = new \curllcall();
+ $result = $getaccesstoken->POSTcall($configs["urlAccessToken"], $curlopt);
+ $apicall = new \curllcall();
+ $result = $apicall->GETcall($configs["urlResourceOwnerDetails"],  $result["access_token"]);
+ $obj = json_decode($result);
+ $mail = $obj->mail;
  $_SESSION['mail'] = (string)$mail;
  session_write_close();
- header("Location: https://www.arteveldehogeschool.be/azuredirectory/1/index.php");
+ header("Location: ".$configs["homeurl"]);
 }
 
 ?>
