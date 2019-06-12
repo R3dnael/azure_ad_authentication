@@ -8,10 +8,10 @@ tested with changing hosts file (only on LAN)
 
 
 ### to do
-* change static link and variables for dynamic usage
+* change static link and variables for dynamic usage (partially done)
 
 
 * security and error handeling
     * only set session variable if succeeded authorisation
 
-* Logout of azure ad feature
+* Logout of azure ad feature ( done)
