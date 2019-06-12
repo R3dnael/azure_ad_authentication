@@ -4,7 +4,7 @@ session_start();
 
 // onderstaande S_SESSIONs en if-else dien aangemaakt te worden in de top van je pagina (kan in includes_once functions, connect,...)
 $_SESSION['adminsvoordezeapp'] = ['krsiscl', 'jonade3', 'evaboo']; // dit zijn je admins voor je applicatie
-$_SERVER['HTTP_HOST'] = "www.arteveldehogeschool.be"; / change for reverse proxy
+$_SERVER['HTTP_HOST'] = "www.arteveldehogeschool.be"; // change for reverse proxy
 $_SESSION['$actual_link'] = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 if (isset($_SESSION['admin']))
