@@ -7,8 +7,8 @@ class AdfsConf {
     
     public $adfsUrl = 'https://sts.arteveldehs.be/adfs/ls/';
     
-    public $spIdentifier = 'urn:federation:php.adfs.ahs-web7';
-       
+    public $spIdentifier = 'urn:federation:php.adfs.azure'; //change identifier for on-prem adfs
+    
     /**
      * Content of the PEM certificate. If this certificate is protected by
      * password, you need to set encryptionCertPassword correctly.
