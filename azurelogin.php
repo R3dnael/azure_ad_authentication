@@ -35,12 +35,15 @@ if (!isset($_GET['code'])) {
  $getaccesstoken = new curllcall();
  $result = $getaccesstoken->POSTcall($configs["urlAccessToken"], $curlopt);
  $apicall = new curllcall();
- $result = $apicall->GETcall($configs["urlResourceOwnerDetails"],  $result["access_token"]);
+ $result = $apicall->GETcall($configs["urlResourceOwnerDetails"],  $result['access_token']);
  $obj = json_decode($result);
  $mail = $obj->mail;
+ $name = $obj->givenName;
+ $surname = $obj->surname;
  $_SESSION['mail'] = (string)$mail;
+ $_SESSION['name'] = (string)$name;
+ $_SESSION['surname'] = (string)$surname;
  session_write_close();
  header("Location: ".$configs["homeurl"]);
 }
-
 ?>
