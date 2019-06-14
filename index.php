@@ -12,7 +12,11 @@
         else {
           $functie = "Medewerker";
         }
-    echo $functie;
+    $username = $_SESSION['username'];
+    $username = strstr($username,'@',true);
+    echo $username."<br>";
+    echo $functie."<br>";
+    echo $_SESSION['department'];
     ?>
     <hmtl>
     <body>
