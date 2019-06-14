@@ -12,7 +12,7 @@ return array(
     // Optional
     'urlAuthorize'              => 'https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/v2.0/authorize',
     'urlAccessToken'            => 'https://login.microsoftonline.com/b6e080ea-adb9-4c79-9303-6dcf826fb854/oauth2/v2.0/token',
-    'urlResourceOwnerDetails'   => 'https://graph.microsoft.com/v1.0/me',
+    'urlResourceOwnerDetails'   => 'https://graph.microsoft.com/v1.0/me?$select=mail,givenName,surname,department,username',//query data
     'scope' => 'offline_access%20https://graph.microsoft.com/user.read%20openid', // array or string
     'homeurl' => ''
 
