@@ -40,9 +40,13 @@ if (!isset($_GET['code'])) {
  $mail = $obj->mail;
  $name = $obj->givenName;
  $surname = $obj->surname;
+ $username = $obj->userPrincipalName;
+ $department = $obj->department;
  $_SESSION['mail'] = (string)$mail;
  $_SESSION['name'] = (string)$name;
  $_SESSION['surname'] = (string)$surname;
+ $_SESSION['username'] = (string)$username;
+ $_SESSION['department'] = (string)$department;
  session_write_close();
  header("Location: ".$configs["homeurl"]);
 }
